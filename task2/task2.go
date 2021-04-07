@@ -1,28 +1,44 @@
-package main
+package task2
 
 import (
 	"fmt"
-	"math"
 )
 
-func main() {
 
-	var (
-		square, diameter, circle float64
-	)
 
-	fmt.Print("Введите плащадь круга: ")
+// генератор простых чисел
+func SimpleNumbers(number int) []int {
 
-	if _, err := fmt.Scanln(&square); err != nil {
-		panic(err)
 
+	var simple []int
+	var flag bool
+
+
+	for i := 2; i < number; i++ {
+		flag = true
+		for j:= 0;j< len(simple);j++ {
+			if i%simple[j] == 0 {
+				flag = false
+				break
+			}
+		}
+		if flag {
+			simple = append(simple,i)
+		}
 	}
 
-	diameter = math.Sqrt(square/math.Pi) * 2
 
-	fmt.Printf("Диаметр: %f\n", diameter)
 
-	circle = diameter * math.Pi
+	return simple
+}
 
-	fmt.Printf("Окружность: %f\n", circle)
+func InputNumber()  {
+
+	var number int
+	fmt.Print("Введите число ")
+
+	if _, err := fmt.Scanln(&number); err != nil {
+		panic(err)
+	}
+	fmt.Printf("%v\n", SimpleNumbers(number))
 }
