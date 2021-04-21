@@ -6,7 +6,7 @@ import (
 
 type Flag struct {
 	ConfigFile   string
-	Port         int
+	Port         uint
 	Db_url       string
 	Kafka_broker string
 }
@@ -16,7 +16,7 @@ var ConfigFlag Flag
 func init() {
 
 	flag.StringVar(&ConfigFlag.ConfigFile, "f", "test.yaml", "config file")
-	flag.IntVar(&ConfigFlag.Port, "p", 0, "port")
-	flag.StringVar(&ConfigFlag.Db_url, "db", "test.yaml", "db connect")
+	flag.UintVar(&ConfigFlag.Port, "p", 0, "port")
+	flag.StringVar(&ConfigFlag.Db_url, "db", "", "db connect")
 	flag.Parse()
 }
