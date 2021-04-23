@@ -1,4 +1,4 @@
-package calcfloat
+package calcuint
 
 // калькулятор реализующий работу в обратной польской нотации
 // для чисел с плавающей запятой
@@ -17,12 +17,13 @@ const helpMessage = "command format: 'num1 num2 cmd'"
 var Calculate Calc
 
 type Calc struct {
-	a, b, res float64
-	cmdMap    map[string]func() (interface{}, error)
+	a, b   uint64
+	res    float64
+	cmdMap map[string]func() (interface{}, error)
 }
 
 func (c *Calc) Sqrt() (interface{}, error) {
-	return math.Sqrt(c.b), nil
+	return math.Sqrt(float64(c.b)), nil
 }
 
 func (c *Calc) Sum() (interface{}, error) {
@@ -46,7 +47,7 @@ func (c *Calc) Divide() (interface{}, error) {
 }
 
 func (c *Calc) ProcessCmd(cmd string) (interface{}, error) {
-	//fmt.Println(c.a, c.b, cmd)
+
 	if cmdFunc, ok := c.cmdMap[cmd]; ok {
 		return cmdFunc()
 	}
@@ -68,17 +69,17 @@ func (c *Calc) InputString(input string) (interface{}, error) {
 
 	switch len(tokens) {
 	case 1:
-		c.b = c.res
+		c.b = uint64(c.res)
 		cmd = tokens[0]
 	case 2:
 		cmd = tokens[1]
-		c.a = c.res
-		c.b, err2 = strconv.ParseFloat(tokens[0], 64)
+		c.a = uint64(c.res)
+		c.b, err2 = strconv.ParseUint(tokens[0], 10, 64)
 
 	case 3:
 		cmd = tokens[2]
-		c.a, err1 = strconv.ParseFloat(tokens[0], 64)
-		c.b, err2 = strconv.ParseFloat(tokens[1], 64)
+		c.a, err1 = strconv.ParseUint(tokens[0], 10, 64)
+		c.b, err2 = strconv.ParseUint(tokens[1], 10, 64)
 
 	default:
 		return 0, fmt.Errorf(helpMessage)
@@ -92,7 +93,17 @@ func (c *Calc) InputString(input string) (interface{}, error) {
 	if err != nil {
 		return 0, err
 	}
-	c.res = res.(float64)
+
+	switch res.(type) {
+	case int64:
+		c.res = float64(res.(int64))
+	case uint64:
+		c.res = float64(res.(uint64))
+	case float64:
+		c.res = res.(float64)
+	default:
+		c.res = res.(float64)
+	}
 
 	return res, nil
 }
