@@ -104,7 +104,7 @@ func (c *Calc) InputString(input string) (interface{}, error) {
 		c.res = res.(float64)
 	}
 
-	return res, nil
+	return c.res, nil
 }
 
 func (c *Calc) DoCalc(input string) {
